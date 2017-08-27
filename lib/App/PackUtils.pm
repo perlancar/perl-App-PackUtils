@@ -63,6 +63,48 @@ sub perl_unpack {
     [unpack($args{template}, @{ exists $args{string} ? $args{string} : eval($args{escaped_string}) })];
 }
 
+$SPEC{perl_pack_template_is_fixed_size} = {
+    v => 1.1,
+    summary => 'Check if a Perl pack() template specifies a fixed-size data',
+    args => {
+        template => {
+            schema => 'str*',
+            req => 1,
+            pos => 0,
+        },
+    },
+    'cmdline.default_format' => 'perl',
+    result_naked => 1,
+};
+sub perl_pack_template_is_fixed_size {
+    #require Pack::Util;
+
+    my %args = @_;
+
+    Pack::Util::template_is_fixed_size($args{template}) ? 1:0;
+}
+
+$SPEC{perl_pack_template_data_size} = {
+    v => 1.1,
+    summary => 'Show Perl pack() template data size in bytes if fixed, or -1 if arbitrary',
+    args => {
+        template => {
+            schema => 'str*',
+            req => 1,
+            pos => 0,
+        },
+    },
+    'cmdline.default_format' => 'perl',
+    result_naked => 1,
+};
+sub perl_pack_template_data_size {
+    #require Pack::Util;
+
+    my %args = @_;
+
+    Pack::Util::template_data_size($args{template});
+}
+
 1;
 # ABSTRACT: Command-line utilities related to Perl pack() and unpack()
 
